@@ -1,0 +1,33 @@
+services:
+
+  db:
+    image: postgres:16
+    container_name: postgres-db
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: meubanco
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  flask-app:
+    build: .
+
+    container_name: flask-app
+
+    ports:
+      - "5000:5000"
+
+    depends_on:
+      - db
+
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:
